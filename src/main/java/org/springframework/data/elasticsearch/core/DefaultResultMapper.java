@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 the original author or authors.
+ * Copyright 2014-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ public class DefaultResultMapper extends AbstractResultMapper {
 	@Override
 	public <T> AggregatedPage<T> mapResults(SearchResponse response, Class<T> clazz, Pageable pageable) {
 		long totalHits = response.getHits().totalHits();
-		List<T> results = new ArrayList<T>();
+		List<T> results = new ArrayList<>();
 		for (SearchHit hit : response.getHits()) {
 			if (hit != null) {
 				T result = null;
@@ -160,7 +160,7 @@ public class DefaultResultMapper extends AbstractResultMapper {
 
 	@Override
 	public <T> LinkedList<T> mapResults(MultiGetResponse responses, Class<T> clazz) {
-		LinkedList<T> list = new LinkedList<T>();
+		LinkedList<T> list = new LinkedList<>();
 		for (MultiGetItemResponse response : responses.getResponses()) {
 			if (!response.isFailed() && response.getResponse().isExists()) {
 				T result = mapEntity(response.getResponse().getSourceAsString(), clazz);

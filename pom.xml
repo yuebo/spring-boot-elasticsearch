@@ -4,13 +4,12 @@
 
     <groupId>org.springframework.data</groupId>
     <artifactId>spring-data-elasticsearch</artifactId>
-    <version>2.1.13.RELEASE</version>
+    <version>2.1.14.RELEASE</version>
 
     <parent>
         <groupId>org.springframework.data.build</groupId>
         <artifactId>spring-data-parent</artifactId>
         <version>1.9.13.RELEASE</version>
-        <relativePath>../spring-data-build/parent/pom.xml</relativePath>
     </parent>
 
     <name>Spring Data Elasticsearch</name>
@@ -23,8 +22,10 @@
 
         <commonscollections>3.2.1</commonscollections>
         <commonslang>2.6</commonslang>
-        <elasticsearch>2.4.0</elasticsearch>
+        <elasticsearch>5.5.0</elasticsearch>
         <springdata.commons>1.13.13.RELEASE</springdata.commons>
+        <encoding>UTF-8</encoding>
+        <lombok>1.18.0</lombok>
 
     </properties>
 
@@ -47,6 +48,12 @@
             <artifactId>spring-tx</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>25.1-jre</version>
+            <scope>test</scope>
+        </dependency>
         <!-- SPRING DATA -->
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -61,17 +68,15 @@
             <version>${commonslang}</version>
         </dependency>
 
-        <!-- JODA Time -->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${jodatime}</version>
-        </dependency>
-
         <!-- Elasticsearch -->
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
             <version>${elasticsearch}</version>
         </dependency>
 
@@ -136,6 +141,16 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
             </plugin>
             <plugin>
@@ -149,20 +164,20 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jfrog.buildinfo</groupId>
-                        <artifactId>artifactory-maven-plugin</artifactId>
-                        <inherited>false</inherited>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    <!--<profiles>-->
+        <!--<profile>-->
+            <!--<id>release</id>-->
+            <!--<build>-->
+                <!--<plugins>-->
+                    <!--<plugin>-->
+                        <!--<groupId>org.jfrog.buildinfo</groupId>-->
+                        <!--<artifactId>artifactory-maven-plugin</artifactId>-->
+                        <!--<inherited>false</inherited>-->
+                    <!--</plugin>-->
+                <!--</plugins>-->
+            <!--</build>-->
+        <!--</profile>-->
+    <!--</profiles>-->
 
     <developers>
         <developer>

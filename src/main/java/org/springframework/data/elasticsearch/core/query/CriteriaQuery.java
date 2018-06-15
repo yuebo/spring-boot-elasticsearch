@@ -36,6 +36,10 @@ public class CriteriaQuery extends AbstractQuery {
 	}
 
 	public CriteriaQuery(Criteria criteria, Pageable pageable) {
+
+		Assert.notNull(criteria, "Criteria must not be null!");
+		Assert.notNull(pageable, "Pageable must not be null!");
+
 		this.criteria = criteria;
 		this.pageable = pageable;
 		if (pageable != null) {

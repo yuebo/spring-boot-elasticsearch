@@ -15,36 +15,47 @@
  */
 package org.springframework.data.elasticsearch.entities;
 
-import lombok.*;
+import java.lang.Double;
+import java.lang.Long;
+import java.lang.Object;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.ScriptedField;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+import static org.springframework.data.elasticsearch.annotations.FieldType.*;
 
 /**
  * @author Rizwan Idrees
  * @author Mohsin Husen
+ * @author Chris White
  */
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
-@Document(indexName = "test-index", type = "test-type", shards = 1, replicas = 0, refreshInterval = "-1")
+@Document(indexName = "test-index-sample", type = "test-type", shards = 1, replicas = 0, refreshInterval = "-1")
 public class SampleEntity {
 
 	@Id
 	private String id;
+	@Field(type = Text, store = true, fielddata = true)
 	private String type;
-	@Field(type = FieldType.String)
+	@Field(type = Text, store = true, fielddata = true)
 	private String message;
 	private int rate;
 	@ScriptedField
-	private Long scriptedRate;
+	private Double scriptedRate;
 	private boolean available;
 	private String highlightedMessage;
 
