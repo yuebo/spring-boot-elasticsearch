@@ -4,7 +4,7 @@
 
     <groupId>org.springframework.data</groupId>
     <artifactId>spring-data-elasticsearch</artifactId>
-    <version>2.1.14.RELEASE</version>
+    <version>2.2.0-SHANPSHOT</version>
 
     <parent>
         <groupId>org.springframework.data.build</groupId>
@@ -13,13 +13,12 @@
     </parent>
 
     <name>Spring Data Elasticsearch</name>
-    <description>Spring Data Implementation for Elasticsearch</description>
+    <description>Spring Data Implementation for Elasticsearch 5.5.0</description>
     <url>https://github.com/spring-projects/spring-data-elasticsearch</url>
 
     <properties>
 
         <dist.key>DATAES</dist.key>
-
         <commonscollections>3.2.1</commonscollections>
         <commonslang>2.6</commonslang>
         <elasticsearch>5.5.0</elasticsearch>
@@ -66,6 +65,13 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${commonslang}</version>
+        </dependency>
+
+        <!-- JODA Time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${jodatime}</version>
         </dependency>
 
         <!-- Elasticsearch -->
@@ -161,6 +167,18 @@
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.springsource.bundlor</groupId>
+                <artifactId>com.springsource.bundlor.maven</artifactId>
+                <version>1.0.0.RELEASE</version>
+
+                <executions>
+                    <execution>
+                        <id>bundlor</id>
+                        <phase/>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -179,43 +197,43 @@
         <!--</profile>-->
     <!--</profiles>-->
 
-    <developers>
-        <developer>
-            <id>biomedcentral</id>
-            <name>BioMed Central Development Team</name>
-            <timezone>+0</timezone>
-        </developer>
-    </developers>
+    <!--<developers>-->
+        <!--<developer>-->
+            <!--<id>biomedcentral</id>-->
+            <!--<name>BioMed Central Development Team</name>-->
+            <!--<timezone>+0</timezone>-->
+        <!--</developer>-->
+    <!--</developers>-->
 
-    <repositories>
-        <repository>
-            <id>spring-libs-release</id>
-            <url>https://repo.spring.io/libs-release</url>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>spring-libs-release</id>-->
+            <!--<url>https://repo.spring.io/libs-release</url>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-plugins-release</id>
-            <url>https://repo.spring.io/plugins-release</url>
-        </pluginRepository>
-    </pluginRepositories>
+    <!--<pluginRepositories>-->
+        <!--<pluginRepository>-->
+            <!--<id>spring-plugins-release</id>-->
+            <!--<url>https://repo.spring.io/plugins-release</url>-->
+        <!--</pluginRepository>-->
+    <!--</pluginRepositories>-->
 
-    <scm>
-        <url>https://github.com/spring-projects/spring-data-elasticsearch</url>
-        <connection>scm:git:git://github.com/spring-projects/spring-data-elasticsearch.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/spring-projects/spring-data-elasticsearch.git
-        </developerConnection>
-    </scm>
+    <!--<scm>-->
+        <!--<url>https://github.com/spring-projects/spring-data-elasticsearch</url>-->
+        <!--<connection>scm:git:git://github.com/spring-projects/spring-data-elasticsearch.git</connection>-->
+        <!--<developerConnection>scm:git:ssh://git@github.com/spring-projects/spring-data-elasticsearch.git-->
+        <!--</developerConnection>-->
+    <!--</scm>-->
 
-    <ciManagement>
-        <system>Bamboo</system>
-        <url>http://build.springsource.org/browse/SPRINGDATAES</url>
-    </ciManagement>
+    <!--<ciManagement>-->
+        <!--<system>Bamboo</system>-->
+        <!--<url>http://build.springsource.org/browse/SPRINGDATAES</url>-->
+    <!--</ciManagement>-->
 
-    <issueManagement>
-        <system>JIRA</system>
-        <url>https://jira.springsource.org/browse/DATAES</url>
-    </issueManagement>
+    <!--<issueManagement>-->
+        <!--<system>JIRA</system>-->
+        <!--<url>https://jira.springsource.org/browse/DATAES</url>-->
+    <!--</issueManagement>-->
 
 </project>
