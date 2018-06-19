@@ -109,6 +109,7 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 	private ElasticsearchConverter elasticsearchConverter;
 	private ResultsMapper resultsMapper;
 	private String searchTimeout;
+	private Map<String,SearchResponse> pageCache=new HashMap();
 
 	public ElasticsearchTemplate(Client client) {
 		this(client, new MappingElasticsearchConverter(new SimpleElasticsearchMappingContext()));
@@ -395,12 +396,21 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 				// Test if it remains hits
 				if (currentHits == null || !currentHits.hasNext()) {
 					// Do a new request
+					if (pageCache.containsKey(scrollId)){
+						SearchResponse response = pageCache.get(scrollId);
+						pageCache.remove(scrollId);
+						currentHits = mapper.mapResults(response, clazz, null).iterator();
+						finished = !currentHits.hasNext();
+						scrollId = response.getScrollId();
+					}else {
 					SearchResponse response = getSearchResponse(client.prepareSearchScroll(scrollId)
 							.setScroll(TimeValue.timeValueMillis(scrollTimeInMillis)).execute());
 					// Save hits and scroll id
 					currentHits = mapper.mapResults(response, clazz, null).iterator();
 					finished = !currentHits.hasNext();
 					scrollId = response.getScrollId();
+				}
+
 				}
 				return currentHits.hasNext();
 			}
@@ -771,7 +781,9 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 			requestBuilder.setPostFilter(elasticsearchFilter);
 		}
 
-		return getSearchResponse(requestBuilder.execute()).getScrollId();
+		SearchResponse searchResponse=getSearchResponse(requestBuilder.execute()) ;
+		pageCache.put(searchResponse.getScrollId(),searchResponse);
+		return searchResponse.getScrollId();
 	}
 
 	private String doScan(SearchRequestBuilder requestBuilder, SearchQuery searchQuery) {
@@ -782,12 +794,18 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 		if (searchQuery.getFilter() != null) {
 			requestBuilder.setPostFilter(searchQuery.getFilter());
 		}
-
-		return getSearchResponse(requestBuilder.setQuery(searchQuery.getQuery()).execute()).getScrollId();
+		SearchResponse searchResponse=getSearchResponse(requestBuilder.execute()) ;
+		pageCache.put(searchResponse.getScrollId(),searchResponse);
+		return searchResponse.getScrollId();
 	}
 
 	@Override
 	public <T> Page<T> scroll(String scrollId, long scrollTimeInMillis, Class<T> clazz) {
+		if(pageCache.containsKey(scrollId)){
+			Page<T> result=resultsMapper.mapResults(pageCache.get(scrollId), clazz, null);
+			pageCache.remove(scrollId);
+			return result;
+		}
 		SearchResponse response = getSearchResponse(client.prepareSearchScroll(scrollId)
 				.setScroll(TimeValue.timeValueMillis(scrollTimeInMillis)).execute());
 		return resultsMapper.mapResults(response, clazz, null);
@@ -795,6 +813,11 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 
 	@Override
 	public <T> Page<T> scroll(String scrollId, long scrollTimeInMillis, SearchResultMapper mapper) {
+		if(pageCache.containsKey(scrollId)){
+			Page<T> result=resultsMapper.mapResults(pageCache.get(scrollId), null, null);
+			pageCache.remove(scrollId);
+			return result;
+		}
 		SearchResponse response = getSearchResponse(client.prepareSearchScroll(scrollId)
 				.setScroll(TimeValue.timeValueMillis(scrollTimeInMillis)).execute());
 		return mapper.mapResults(response, null, null);
@@ -802,6 +825,7 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 
 	@Override
 	public void clearScroll(String scrollId) {
+		pageCache.remove(scrollId);
 		client.prepareClearScroll().addScrollId(scrollId).execute().actionGet();
 	}
 

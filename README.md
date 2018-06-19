@@ -31,7 +31,7 @@ Add the Maven dependency:
 <dependency>
     <groupId>org.springframework.data</groupId>
     <artifactId>spring-data-elasticsearch</artifactId>
-    <version>2.0.4.RELEASE</version>
+    <version>2.2.0.SNAPSHOT</version>
 </dependency>
 ```
 
@@ -54,6 +54,7 @@ the appropriate dependency version.
 
 |   spring data elasticsearch         | elasticsearch |
 |:-----------------------------------:|:-------------:|
+|           2.2.0.SNAPSHOT            |      5.5.0    |
 |           2.0.4.RELEASE             |      2.4.0    |
 |           2.0.0.RELEASE             |      2.2.0    |
 |           1.4.0.M1                  |      1.7.3    |
