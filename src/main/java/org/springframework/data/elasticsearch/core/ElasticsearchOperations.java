@@ -406,6 +406,15 @@ public interface ElasticsearchOperations {
 	<T> String delete(Class<T> clazz, String id);
 
 	/**
+	 *
+	 * @param indexName
+	 * @param type
+	 * @param s
+	 * @param parentId
+	 */
+	String delete(String indexName, String type, String s, String parentId);
+
+	/**
 	 * Delete all records matching the query
 	 *
 	 * @param clazz

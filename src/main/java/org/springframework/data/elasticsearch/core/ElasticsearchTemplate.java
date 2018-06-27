@@ -545,6 +545,8 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 		// We should call this because we are not going through a mapper.
 		if (query.getObject() != null) {
 			setPersistentEntityId(query.getObject(), documentId);
+			//resolve the id null bug
+			prepareIndex(query).execute().actionGet().getId();
 		}
 		return documentId;
 	}
@@ -645,6 +647,10 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 	@Override
 	public String delete(String indexName, String type, String id) {
 		return client.prepareDelete(indexName, type, id).execute().actionGet().getId();
+	}
+	@Override
+	public String delete(String indexName, String type, String id,String parentId) {
+		return client.prepareDelete(indexName, type, id).setRouting(parentId).execute().actionGet().getId();
 	}
 
 	@Override

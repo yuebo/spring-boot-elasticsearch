@@ -229,7 +229,10 @@ public abstract class AbstractElasticsearchRepository<T, ID extends Serializable
 	@Override
 	public void delete(T entity) {
 		Assert.notNull(entity, "Cannot delete 'null' entity.");
-		delete(extractIdFromBean(entity));
+		String parentId=extractParentIdFromBean(entity);
+		ID id=extractIdFromBean(entity);
+		elasticsearchOperations.delete(entityInformation.getIndexName(), entityInformation.getType(),
+				stringIdRepresentation(id),parentId);
 		elasticsearchOperations.refresh(entityInformation.getIndexName());
 	}
 
