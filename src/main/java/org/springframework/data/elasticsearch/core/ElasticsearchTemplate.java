@@ -814,7 +814,7 @@ public class ElasticsearchTemplate implements ElasticsearchOperations, Applicati
 	@Override
 	public <T> Page<T> scroll(String scrollId, long scrollTimeInMillis, SearchResultMapper mapper) {
 		if(pageCache.containsKey(scrollId)){
-			Page<T> result=resultsMapper.mapResults(pageCache.get(scrollId), null, null);
+			Page<T> result=mapper.mapResults(pageCache.get(scrollId), null, null);
 			pageCache.remove(scrollId);
 			return result;
 		}
